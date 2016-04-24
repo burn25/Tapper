@@ -10,16 +10,70 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    //outlets
+    @IBOutlet weak var logoImg:UIImageView!
+    @IBOutlet weak var howManyTapsTxt:UITextField!
+    @IBOutlet weak var playButton:UIButton!
+    
+    @IBOutlet weak var tapButton:UIButton!
+    @IBOutlet weak var tapsLabel:UILabel!
+    
+    //variables
+    var maxTaps: Int = 0
+    var currentTaps: Int = 0
+    
+    @IBAction func onPlayButtonPressed(sender: UIButton!) {
+        
+        if howManyTapsTxt.text != nil && howManyTapsTxt.text != "" {
+            
+            maxTaps = Int(howManyTapsTxt.text!)!
+            currentTaps = 0
+            
+            logoImg.hidden = true
+            playButton.hidden = true
+            howManyTapsTxt.hidden = true
+            
+            tapButton.hidden = false
+            tapsLabel.hidden = false
+            
+            updateTapsLabel()
+        }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func onCoinTapped(sender: UIButton!) {
+        currentTaps += 1
+        
+        updateTapsLabel()
+        
+        if isGameOver() {
+            restartGame()
+        }
     }
-
+    
+    func updateTapsLabel() {
+        tapsLabel.text = "\(currentTaps) Taps"
+    }
+    
+    func isGameOver() -> Bool {
+        if currentTaps >= maxTaps {
+            return true
+        }
+        
+        return false
+    }
+    
+    func restartGame() {
+        maxTaps = 0
+        howManyTapsTxt.text = ""
+        
+        logoImg.hidden = false
+        playButton.hidden = false
+        howManyTapsTxt.hidden = false
+        
+        tapButton.hidden = true
+        tapsLabel.hidden = true
+        
+    }
 
 }
 
